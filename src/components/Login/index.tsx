@@ -83,9 +83,9 @@ const Login: React.FC = () => {
               className={styles["eye-icon"]}
             >
               {showPassword ? (
-                <img src="/images/icons/eyeDisable.svg" />
+                <img src="/images/icons/eyeDisable.svg" alt="show" />
               ) : (
-                <img src="/images/icons/eye.svg" />
+                <img src="/images/icons/eye.svg" alt="hide" />
               )}
             </button>
           </div>
