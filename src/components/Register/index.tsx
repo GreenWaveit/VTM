@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import styles from "./index.module.css";
 
 const Registration: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<"student" | "faculty">("student");
+  const [activeTab, setActiveTab] = useState<"student" | "faculty" | "college">(
+    "student"
+  );
   const [formData, setFormData] = useState<any>({
     student: {
       name: "",
@@ -28,10 +30,27 @@ const Registration: React.FC = () => {
       bankAccount: "",
       ifsc: "",
     },
+    college: {
+      name: "",
+      address: "",
+      city: "",
+      pincode: "",
+      contactPerson: "",
+      contactNumber1: "",
+      contactNumber2: "",
+      email: "",
+      username: "",
+      password: "",
+    },
   });
-  const [errors, setErrors] = useState<any>({ student: {}, faculty: {} });
+  const [errors, setErrors] = useState<any>({
+    student: {},
+    faculty: {},
+    college: {},
+  });
 
-  const handleTabSwitch = (tab: "student" | "faculty") => setActiveTab(tab);
+  const handleTabSwitch = (tab: "student" | "faculty" | "college") =>
+    setActiveTab(tab);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -79,6 +98,17 @@ const Registration: React.FC = () => {
         "bankAccount",
         "ifsc",
       ],
+      college: [
+        "name",
+        "address",
+        "city",
+        "pincode",
+        "contactPerson",
+        "contactNumber1",
+        "email",
+        "username",
+        "password",
+      ],
     };
     const newErrors: any = {};
     requiredFields[activeTab].forEach((field) => {
@@ -123,6 +153,17 @@ const Registration: React.FC = () => {
       "pan",
       "bankAccount",
       "ifsc",
+    ],
+    college: [
+      "name",
+      "address",
+      "city",
+      "pincode",
+      "contactPerson",
+      "contactNumber1",
+      "email",
+      "username",
+      "password",
     ],
   };
 
@@ -195,11 +236,19 @@ const Registration: React.FC = () => {
         >
           Faculty
         </button>
+        <button
+          className={activeTab === "college" ? styles.active : ""}
+          onClick={() => handleTabSwitch("college")}
+        >
+          College
+        </button>
       </div>
       <h2 className={styles.title}>
         {activeTab === "student"
           ? "Student Registration"
-          : "Faculty Registration"}
+          : activeTab === "faculty"
+          ? "Faculty Registration"
+          : "College Registration"}
       </h2>
       <form onSubmit={handleSubmit} className={styles["registration-form"]}>
         {activeTab === "student" ? (
@@ -239,7 +288,7 @@ const Registration: React.FC = () => {
               "Enter secondary contact number (optional)"
             )}
           </>
-        ) : (
+        ) : activeTab === "faculty" ? (
           <>
             {renderField("Name", "name", "text", "Enter your full name")}
             {renderField("Email", "email", "email", "Enter your email")}
@@ -282,6 +331,34 @@ const Registration: React.FC = () => {
               "Enter your bank account number"
             )}
             {renderField("IFSC", "ifsc", "text", "Enter your IFSC code")}
+          </>
+        ) : (
+          <>
+            {renderField("Name", "name", "text", "Enter college name")}
+            {renderField("Address", "address", "text", "Enter college address")}
+            {renderField("City", "city", "text", "Enter city")}
+            {renderField("Pincode", "pincode", "text", "Enter pincode")}
+            {renderField(
+              "Contact Person",
+              "contactPerson",
+              "text",
+              "Enter contact person name"
+            )}
+            {renderField(
+              "Contact Number1",
+              "contactNumber1",
+              "text",
+              "Enter contact number"
+            )}
+            {renderField(
+              "Contact Number2",
+              "contactNumber2",
+              "text",
+              "Enter secondary contact number (optional)"
+            )}
+            {renderField("Email", "email", "email", "Enter college email")}
+            {renderField("Username", "username", "text", "Enter username")}
+            {renderField("Password", "password", "password", "Enter password")}
           </>
         )}
         <button type="submit">Submit</button>
