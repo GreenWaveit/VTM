@@ -32,3 +32,45 @@ p {
   max-width: 1200px;
   margin: auto;
 }
+
+.submitButton {
+  padding: 12px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  max-width: 200px;
+  margin-top: 20px;
+}
+
+.submitButton:hover {
+  background-color: #0056b3;
+}
+
+.termsText {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #333;
+}
+
+.termsText a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.termsText a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 820px) {
+  .container {
+    padding: 0px 20px;
+  }
+  .submitButton {
+    max-width: 100%;
+    width: 100%; /* Full width for better visibility */
+  }
+}

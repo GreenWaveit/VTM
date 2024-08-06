@@ -97,7 +97,8 @@ const Login: React.FC = () => {
           Login
         </button>
         <p className={styles.register}>
-          Don't have an account? <a href="/register">Register for free</a>
+          Don't have an account?{" "}
+          <a href="/college-register">Register for free</a>
         </p>
       </form>
     </div>

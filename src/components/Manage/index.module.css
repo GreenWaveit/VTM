@@ -1,0 +1,94 @@
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  background-color: #f9a825; /* Orange background color */
+  padding: 10px;
+  border-radius: 5px;
+  color: #000;
+  font-weight: 700;
+  margin: 20px 0;
+}
+
+.sectionHeader::before {
+  content: "•";
+  margin-right: 10px;
+  font-size: 24px;
+}
+
+.inputContainer {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  height: 52px;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.todoList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.todoItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 10px;
+}
+
+.editButton {
+  background-color: #28a745; /* Green color for edit */
+  display: flex;
+  align-items: center;
+}
+
+.editButton:hover {
+  background-color: #218838; /* Darker green for hover */
+}
+
+.deleteButton {
+  background-color: #e25050; /* Red color for delete */
+  display: flex;
+  align-items: center;
+}
+
+.deleteButton:hover {
+  background-color: #c0392b; /* Darker red for hover */
+}
+
+.addButton {
+  background-color: #007bff;
+}
+
+.addButton:hover {
+  background-color: #0056b3;
+}
