@@ -70,6 +70,7 @@ input {
 }
 
 .submit-button {
+  justify-content: center;
   padding: 10px 15px;
   border: none;
   border-radius: 5px;

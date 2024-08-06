@@ -2,7 +2,7 @@ import React, { useState, useRef, KeyboardEvent } from "react";
 import { FaEdit, FaTrash, FaPlus, FaSyncAlt } from "react-icons/fa"; // Import icons
 import styles from "./index.module.css"; // Use the updated styles
 
-const TodoList = () => {
+const Subject = () => {
   const [todos, setTodos] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [editIndex, setEditIndex] = useState<number | null>(null);
@@ -49,14 +49,14 @@ const TodoList = () => {
 
   return (
     <div className="container">
-      <div className={styles.sectionHeader}>To-Do List</div>
+      <div className={styles.sectionHeader}>Manage Subjects</div>
       <div className={styles.inputContainer}>
         <input
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Enter a new todo"
+          placeholder="Enter a new subject"
           ref={inputRef} // Attach the ref to the input field
         />
         <button
@@ -77,7 +77,6 @@ const TodoList = () => {
               <button
                 onClick={() => handleEditTodo(index)}
                 className={styles.editButton}
-                style={{ marginRight: 10 }}
               >
                 <FaEdit /> {/* Edit icon */}
                 Edit
@@ -97,4 +96,4 @@ const TodoList = () => {
   );
 };
 
-export default TodoList;
+export default Subject;

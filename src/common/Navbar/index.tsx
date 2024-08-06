@@ -27,6 +27,7 @@ const Navbar = () => {
           <option value="/student-register">Student Register</option>
           <option value="/faculty-register">Faculty Register</option>
           <option value="/college-register">College Register</option>
+          <option value="/manage-subjects">Manage Subjects</option>
         </select>
       </div>
     </div>
