@@ -21,6 +21,12 @@
   margin-bottom: 20px;
 }
 
+.inputContainerSelf {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  gap: 20px;
+}
+
 input {
   flex: 1;
   padding: 10px;
@@ -102,6 +108,12 @@ button:hover {
 .filterContainer {
   display: flex;
   gap: 20px;
+}
+
+@media (max-width: 1024px) {
+  .inputContainerSelf {
+    grid-template-columns: 1fr !important;
+  }
 }
 
 @media (max-width: 768px) {

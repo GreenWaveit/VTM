@@ -11,6 +11,7 @@ import Qualifications from "./components/Manage/Qualifications";
 import ManageTopic from "./components/Manage/Topics";
 import FacultySubjectMapping from "./components/Mapping/FacultyToSubject";
 import FacultyToCollegeMapping from "./components/Mapping/FacultyToCollege";
+import SelfStudy from "./components/Manage/SelfStudy";
 const App = () => {
   return (
     <Router>
@@ -33,6 +34,7 @@ const App = () => {
           path="/map-faculty-college"
           element={<FacultyToCollegeMapping />}
         />
+        <Route path="/self-study" element={<SelfStudy />} />
       </Routes>
       {/* <Footer /> */}
     </Router>
