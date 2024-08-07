@@ -26,7 +26,6 @@ const ManageTopic: React.FC = () => {
   const [editIndex, setEditIndex] = useState<number | null>(null);
   const [filterSubject, setFilterSubject] = useState<string>("");
   const [filterChapter, setFilterChapter] = useState<string>("");
-  const [isFilterApplied, setIsFilterApplied] = useState<boolean>(false); // Track if filter is applied
   const inputRef = useRef<HTMLInputElement>(null); // Reference for the input field
 
   const handleAddTopic = () => {
@@ -62,6 +61,7 @@ const ManageTopic: React.FC = () => {
       }
     }
   };
+
   const handleEditTopic = (index: number) => {
     const actualIndex = filteredTopics[index]
       ? topics.indexOf(filteredTopics[index])
@@ -71,7 +71,6 @@ const ManageTopic: React.FC = () => {
       setInputValue(filteredTopics[index].topic);
       setSelectedSubject(filteredTopics[index].subject);
       setSelectedChapter(filteredTopics[index].chapter);
-      // Do not reset filters here
       if (inputRef.current) {
         inputRef.current.focus(); // Focus on input field
       }
@@ -89,9 +88,9 @@ const ManageTopic: React.FC = () => {
       if (editIndex !== null && editIndex === actualIndex) {
         setEditIndex(null);
         setInputValue("");
-        setFilterSubject(""); // Reset filters
-        setFilterChapter("");
       }
+      setFilterSubject(filterSubject); // Maintain current filters
+      setFilterChapter(filterChapter);
     }
   };
 
@@ -104,12 +103,10 @@ const ManageTopic: React.FC = () => {
   const handleFilterSubjectChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setFilterSubject(e.target.value);
     setFilterChapter(""); // Reset chapter filter when subject changes
-    setIsFilterApplied(true); // Mark filter as applied
   };
 
   const handleFilterChapterChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setFilterChapter(e.target.value);
-    setIsFilterApplied(true); // Mark filter as applied
   };
 
   // Filter topics based on selected filterSubject and filterChapter
@@ -130,6 +127,14 @@ const ManageTopic: React.FC = () => {
   // Determine if filter options should be shown
   const showFilterOptions =
     uniqueSubjects.length > 1 || uniqueChapters.length > 1;
+
+  // Reset filters if no data matches the current filters
+  React.useEffect(() => {
+    if (filteredTopics.length === 0 && (filterSubject || filterChapter)) {
+      setFilterSubject("");
+      setFilterChapter("");
+    }
+  }, [filteredTopics.length, filterSubject, filterChapter]);
 
   return (
     <div className="container">
@@ -210,7 +215,10 @@ const ManageTopic: React.FC = () => {
                   className={styles.filterSelect}
                 >
                   <option value="">All</option>
-                  {chapters[filterSubject || selectedSubject].map((chapter) => (
+                  {(filterSubject
+                    ? chapters[filterSubject]
+                    : uniqueChapters
+                  ).map((chapter) => (
                     <option key={chapter} value={chapter}>
                       {chapter}
                     </option>
@@ -223,7 +231,7 @@ const ManageTopic: React.FC = () => {
       )}
 
       <ul className={styles.todoList}>
-        {filteredTopics.length === 0 && isFilterApplied ? (
+        {filteredTopics.length === 0 && (filterSubject || filterChapter) ? (
           <div className={styles.noDataMessage}>No data found</div>
         ) : (
           filteredTopics.map((topic, index) => (
