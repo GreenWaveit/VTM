@@ -28,6 +28,11 @@ const Navbar = () => {
           <option value="/faculty-register">Faculty Register</option>
           <option value="/college-register">College Register</option>
           <option value="/manage-subjects">Manage Subjects</option>
+          <option value="/manage-chapters">Manage Chapters</option>
+          <option value="/manage-qualifications">Manage Qualifications</option>
+          <option value="/manage-topics">Manage Topics</option>
+          <option value="/map-faculty-subject">Map faculty to subject</option>
+          <option value="/map-faculty-college">Map faculty to college</option>
         </select>
       </div>
     </div>

@@ -44,11 +44,6 @@ button {
   font-size: 16px;
 }
 
-.highlight {
-  font-weight: bold;
-  color: #0070f3; /* Blue color for highlighting */
-}
-
 button:hover {
   background-color: #0056b3;
 }
@@ -99,20 +94,20 @@ button:hover {
   background-color: #0056b3;
 }
 
-.filterContainer {
-  display: flex;
-  gap: 20px;
+.highlight {
+  font-weight: bold;
+  color: #0070f3; /* Blue color for highlighting */
 }
 
 @media (max-width: 768px) {
-  .inputContainer {
-    flex-direction: column;
-  }
   .todoItem {
     flex-direction: column;
     gap: 10px;
     align-items: self-start;
     padding: 10px 0px;
+  }
+  .inputContainer {
+    flex-direction: column;
   }
   .buttonContainer,
   button {
