@@ -215,7 +215,7 @@ const SelfStudy: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <button className={styles.viewButton}>
+                <button className={styles.addButton}>
                   <FaEye /> View
                 </button>
               </a>

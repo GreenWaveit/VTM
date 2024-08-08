@@ -1,0 +1,38 @@
+.dropdownContainer {
+  position: relative;
+  width: 100%;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  border: 1px solid #ccc;
+  background-color: white;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.dropdownOption {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.dropdownOption:hover,
+.selected {
+  background-color: #f0f0f0;
+}
+
+.noOptions {
+  padding: 8px;
+  text-align: center;
+  color: #888;
+}

@@ -1,6 +1,7 @@
-import React, { useState, useRef, ChangeEvent } from "react";
-import { FaEdit, FaTrash, FaPlus } from "react-icons/fa"; // Import icons
-import styles from "./index.module.css"; // Use your styles
+import React, { useState, useRef, ChangeEvent, useEffect } from "react";
+import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
+import Pagination from "../UI/Pagination";
+import styles from "./index.module.css";
 
 interface Topic {
   subject: string;
@@ -8,13 +9,13 @@ interface Topic {
   topic: string;
 }
 
-const subjects = ["Math", "Science", "English", "History"]; // Example subjects
+const subjects = ["Math", "Science", "English", "History"];
 const chapters: Record<string, string[]> = {
   Math: ["Algebra", "Geometry", "Calculus"],
   Science: ["Physics", "Chemistry", "Biology"],
   English: ["Literature", "Grammar", "Writing"],
   History: ["Ancient", "Medieval", "Modern"],
-}; // Example chapters based on subjects
+};
 
 const ManageTopic: React.FC = () => {
   const [topics, setTopics] = useState<Topic[]>([]);
@@ -26,12 +27,17 @@ const ManageTopic: React.FC = () => {
   const [editIndex, setEditIndex] = useState<number | null>(null);
   const [filterSubject, setFilterSubject] = useState<string>("");
   const [filterChapter, setFilterChapter] = useState<string>("");
-  const inputRef = useRef<HTMLInputElement>(null); // Reference for the input field
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(10);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [itemsPerPage, filterSubject, filterChapter]);
 
   const handleAddTopic = () => {
     if (inputValue.trim()) {
       if (editIndex !== null) {
-        // Update existing topic
         const updatedTopics = topics.map((topic, index) =>
           index === editIndex
             ? {
@@ -42,10 +48,9 @@ const ManageTopic: React.FC = () => {
             : topic
         );
         setTopics(updatedTopics);
-        setEditIndex(null); // Reset edit index
-        setInputValue(""); // Clear input value
+        setEditIndex(null);
+        setInputValue("");
       } else {
-        // Add new topic
         setTopics([
           ...topics,
           {
@@ -54,10 +59,10 @@ const ManageTopic: React.FC = () => {
             topic: inputValue,
           },
         ]);
-        setInputValue(""); // Clear input value
+        setInputValue("");
       }
       if (inputRef.current) {
-        inputRef.current.focus(); // Focus on input field
+        inputRef.current.focus();
       }
     }
   };
@@ -72,7 +77,7 @@ const ManageTopic: React.FC = () => {
       setSelectedSubject(filteredTopics[index].subject);
       setSelectedChapter(filteredTopics[index].chapter);
       if (inputRef.current) {
-        inputRef.current.focus(); // Focus on input field
+        inputRef.current.focus();
       }
     }
   };
@@ -84,39 +89,41 @@ const ManageTopic: React.FC = () => {
     if (actualIndex !== -1) {
       const updatedTopics = topics.filter((_, i) => i !== actualIndex);
       setTopics(updatedTopics);
-      // Reset edit state if deleting the edited topic
+
+      // If the current page becomes empty after deletion, go back one page
+      const maxPage = Math.ceil(updatedTopics.length / itemsPerPage);
+      if (currentPage > maxPage) {
+        setCurrentPage(maxPage);
+      }
+
       if (editIndex !== null && editIndex === actualIndex) {
         setEditIndex(null);
         setInputValue("");
       }
-      setFilterSubject(filterSubject); // Maintain current filters
-      setFilterChapter(filterChapter);
     }
   };
 
   const handleSubjectChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const newSubject = e.target.value;
     setSelectedSubject(newSubject);
-    setSelectedChapter(chapters[newSubject][0]); // Reset chapter to the first option
+    setSelectedChapter(chapters[newSubject][0]);
   };
 
   const handleFilterSubjectChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setFilterSubject(e.target.value);
-    setFilterChapter(""); // Reset chapter filter when subject changes
+    setFilterChapter("");
   };
 
   const handleFilterChapterChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setFilterChapter(e.target.value);
   };
 
-  // Filter topics based on selected filterSubject and filterChapter
   const filteredTopics = topics.filter((topic) => {
     const subjectMatch = filterSubject ? topic.subject === filterSubject : true;
     const chapterMatch = filterChapter ? topic.chapter === filterChapter : true;
     return subjectMatch && chapterMatch;
   });
 
-  // Determine unique subjects and chapters from the topics
   const uniqueSubjects = Array.from(
     new Set(topics.map((topic) => topic.subject))
   );
@@ -124,12 +131,14 @@ const ManageTopic: React.FC = () => {
     new Set(topics.map((topic) => topic.chapter))
   );
 
-  // Determine if filter options should be shown
   const showFilterOptions =
     uniqueSubjects.length > 1 || uniqueChapters.length > 1;
 
-  // Reset filters if no data matches the current filters
-  React.useEffect(() => {
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, filteredTopics.length);
+  const displayedTopics = filteredTopics.slice(startIndex, endIndex);
+
+  useEffect(() => {
     if (filteredTopics.length === 0 && (filterSubject || filterChapter)) {
       setFilterSubject("");
       setFilterChapter("");
@@ -145,13 +154,13 @@ const ManageTopic: React.FC = () => {
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           placeholder="Enter a new topic"
-          ref={inputRef} // Attach the ref to the input field
+          ref={inputRef}
         />
         <select
           id="subjects"
           value={selectedSubject}
           onChange={handleSubjectChange}
-          className={styles.select}
+          className={styles.selectTopics}
         >
           {subjects.map((subject) => (
             <option key={subject} value={subject}>
@@ -163,7 +172,7 @@ const ManageTopic: React.FC = () => {
           id="chapters"
           value={selectedChapter}
           onChange={(e) => setSelectedChapter(e.target.value)}
-          className={styles.select}
+          className={styles.selectTopics}
         >
           {chapters[selectedSubject].map((chapter) => (
             <option key={chapter} value={chapter}>
@@ -181,7 +190,6 @@ const ManageTopic: React.FC = () => {
           {editIndex !== null ? "Update" : "Add"}
         </button>
       </div>
-      {/* Render filter options only if there are more than one unique subject or chapter */}
       {showFilterOptions && (
         <div className={styles.filterContainer}>
           <div className={styles.firstContainer}>
@@ -207,7 +215,9 @@ const ManageTopic: React.FC = () => {
           <div>
             {uniqueChapters.length > 1 && (
               <>
-                <label htmlFor="filter">Filter by Chapter:</label>
+                <label htmlFor="filter" className="chapterContainer">
+                  Filter by Chapter:
+                </label>
                 <select
                   id="filter"
                   value={filterChapter}
@@ -234,10 +244,10 @@ const ManageTopic: React.FC = () => {
         {filteredTopics.length === 0 && (filterSubject || filterChapter) ? (
           <div className={styles.noDataMessage}>No data found</div>
         ) : (
-          filteredTopics.map((topic, index) => (
+          displayedTopics.map((topic, index) => (
             <li key={index} className={styles.todoItem}>
               <span>
-                {index + 1}.{" "}
+                {startIndex + index + 1}.{" "}
                 <span className={styles.highlight}>{topic.subject}</span> -{" "}
                 <span className={styles.highlight}>{topic.chapter}</span> :{" "}
                 {topic.topic}
@@ -247,21 +257,26 @@ const ManageTopic: React.FC = () => {
                   onClick={() => handleEditTopic(index)}
                   className={styles.editButton}
                 >
-                  <FaEdit /> {/* Edit icon */}
-                  Edit
+                  <FaEdit /> Edit
                 </button>
                 <button
                   onClick={() => handleDeleteTopic(index)}
                   className={styles.deleteButton}
                 >
-                  <FaTrash /> {/* Delete icon */}
-                  Delete
+                  <FaTrash /> Delete
                 </button>
               </div>
             </li>
           ))
         )}
       </ul>
+      <Pagination
+        totalItems={filteredTopics.length}
+        itemsPerPage={itemsPerPage}
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+        onItemsPerPageChange={setItemsPerPage}
+      />
     </div>
   );
 };

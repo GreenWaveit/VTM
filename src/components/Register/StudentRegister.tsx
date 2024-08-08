@@ -1,9 +1,22 @@
 import React, { useState } from "react";
 import styles from "../../styles/index.module.css";
+import { useNavigate } from "react-router-dom";
 
 enum ClassEnum {
   "1 PU" = "1 PU",
   "2 PU" = "2 PU",
+}
+
+enum CollegeEnum {
+  "Harvard" = "Harvard",
+  "MIT" = "MIT",
+  "Stanford" = "Stanford",
+  "Oxford" = "Oxford",
+}
+
+enum AcademicYearEnum {
+  "2024-25" = "2024-25",
+  "2025-26" = "2025-26",
 }
 
 interface StudentFormInputs {
@@ -11,11 +24,11 @@ interface StudentFormInputs {
   email?: string;
   username: string;
   password: string;
-  college: string;
+  college: CollegeEnum;
   class: ClassEnum;
-  academicYear: number;
-  contactNumber1: number;
-  contactNumber2?: number;
+  academicYear: AcademicYearEnum;
+  contactNumber1: string;
+  contactNumber2?: string;
 }
 
 const initialFormState: StudentFormInputs = {
@@ -23,11 +36,11 @@ const initialFormState: StudentFormInputs = {
   email: "",
   username: "",
   password: "",
-  college: "",
+  college: CollegeEnum["Harvard"],
   class: ClassEnum["1 PU"],
-  academicYear: 2024,
-  contactNumber1: 0,
-  contactNumber2: 0,
+  academicYear: AcademicYearEnum["2024-25"],
+  contactNumber1: "",
+  contactNumber2: "",
 };
 
 const StudentRegister: React.FC = () => {
@@ -35,6 +48,7 @@ const StudentRegister: React.FC = () => {
   const [errors, setErrors] = useState<
     Partial<Record<keyof StudentFormInputs, string>>
   >({});
+  const router = useNavigate();
 
   const validateEmail = (email: string) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -47,10 +61,7 @@ const StudentRegister: React.FC = () => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]:
-        name === "academicYear" || name.includes("contactNumber")
-          ? Number(value)
-          : value,
+      [name]: value,
     });
   };
 
@@ -80,21 +91,26 @@ const StudentRegister: React.FC = () => {
       newErrors.academicYear = "Academic Year is required";
     if (!formData.contactNumber1)
       newErrors.contactNumber1 = "Contact Number1 is required";
+    else if (!/^\d{10}$/.test(formData.contactNumber1))
+      newErrors.contactNumber1 = "Contact Number1 must be 10 digits";
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
       setErrors({});
       console.log(formData);
+      router("/students-list");
     }
   };
 
   return (
     <div className={styles.formContainer}>
-      <div className={styles.sectionHeader}>Student Register</div>
+      <div className={styles.sectionHeader}>Student Registration</div>
       <form className={styles.form}>
         <div className={styles.formGroup}>
-          <label htmlFor="name">Name:</label>
+          <label htmlFor="name">
+            Name<span className={styles.required}>*</span>
+          </label>
           <input
             type="text"
             id="name"
@@ -108,7 +124,9 @@ const StudentRegister: React.FC = () => {
           {errors.name && <p className={styles.errorText}>{errors.name}</p>}
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="email">
+            Email<span className={styles.required}>*</span>
+          </label>
           <input
             type="email"
             id="email"
@@ -122,7 +140,9 @@ const StudentRegister: React.FC = () => {
           {errors.email && <p className={styles.errorText}>{errors.email}</p>}
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="username">
+            Username<span className={styles.required}>*</span>
+          </label>
           <input
             type="text"
             id="username"
@@ -138,7 +158,9 @@ const StudentRegister: React.FC = () => {
           )}
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="password">
+            Password<span className={styles.required}>*</span>
+          </label>
           <input
             type="password"
             id="password"
@@ -154,23 +176,30 @@ const StudentRegister: React.FC = () => {
           )}
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="college">College:</label>
-          <input
-            type="text"
+          <label htmlFor="college">
+            College<span className={styles.required}>*</span>
+          </label>
+          <select
             id="college"
             name="college"
             value={formData.college}
             onChange={handleChange}
             onFocus={handleFocus}
-            placeholder="Enter your college"
             className={errors.college ? styles.errorInput : ""}
-          />
+          >
+            <option value={CollegeEnum["Harvard"]}>Harvard</option>
+            <option value={CollegeEnum["MIT"]}>MIT</option>
+            <option value={CollegeEnum["Stanford"]}>Stanford</option>
+            <option value={CollegeEnum["Oxford"]}>Oxford</option>
+          </select>
           {errors.college && (
             <p className={styles.errorText}>{errors.college}</p>
           )}
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="class">Class:</label>
+          <label htmlFor="class">
+            Class<span className={styles.required}>*</span>
+          </label>
           <select
             id="class"
             name="class"
@@ -185,61 +214,74 @@ const StudentRegister: React.FC = () => {
           {errors.class && <p className={styles.errorText}>{errors.class}</p>}
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="academicYear">Academic Year:</label>
-          <input
-            type="number"
+          <label htmlFor="academicYear">
+            Academic Year<span className={styles.required}>*</span>
+          </label>
+          <select
             id="academicYear"
             name="academicYear"
             value={formData.academicYear}
             onChange={handleChange}
             onFocus={handleFocus}
-            placeholder="Enter academic year"
             className={errors.academicYear ? styles.errorInput : ""}
-          />
+          >
+            <option value={AcademicYearEnum["2024-25"]}>2024-25</option>
+            <option value={AcademicYearEnum["2025-26"]}>2025-26</option>
+          </select>
           {errors.academicYear && (
             <p className={styles.errorText}>{errors.academicYear}</p>
           )}
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="contactNumber1">Contact Number1:</label>
+          <label htmlFor="contactNumber1">
+            Contact Number1<span className={styles.required}>*</span>
+          </label>
           <input
-            type="number"
+            type="text"
             id="contactNumber1"
             name="contactNumber1"
             value={formData.contactNumber1}
             onChange={handleChange}
             onFocus={handleFocus}
             placeholder="Enter contact number"
+            maxLength={10}
             className={errors.contactNumber1 ? styles.errorInput : ""}
+            onKeyPress={(e) => {
+              if (!/^\d$/.test(e.key)) {
+                e.preventDefault();
+              }
+            }}
           />
           {errors.contactNumber1 && (
             <p className={styles.errorText}>{errors.contactNumber1}</p>
           )}
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="contactNumber2">Contact Number2:</label>
+          <label htmlFor="contactNumber2">Contact Number2</label>
           <input
-            type="number"
+            type="text"
             id="contactNumber2"
             name="contactNumber2"
             value={formData.contactNumber2}
             onChange={handleChange}
             onFocus={handleFocus}
-            placeholder="Enter additional contact number (optional)"
+            placeholder="Enter contact number"
+            maxLength={10}
             className={errors.contactNumber2 ? styles.errorInput : ""}
+            onKeyPress={(e) => {
+              if (!/^\d$/.test(e.key)) {
+                e.preventDefault();
+              }
+            }}
           />
           {errors.contactNumber2 && (
             <p className={styles.errorText}>{errors.contactNumber2}</p>
           )}
         </div>
+        <button className="submitButton" onClick={handleSubmit}>
+          Submit
+        </button>
       </form>
-      <div className="termsText">
-        By Signing Up, you agree to our <a href="#">Terms of Use</a> &amp;{" "}
-        <a href="#">Privacy Policy</a>
-      </div>
-      <button type="button" onClick={handleSubmit} className="submitButton">
-        Submit
-      </button>
     </div>
   );
 };

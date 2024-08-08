@@ -9,11 +9,11 @@
   margin: 20px 0;
 }
 
-.sectionHeader::before {
+/* .sectionHeader::before {
   content: "•";
   margin-right: 10px;
   font-size: 24px;
-}
+} */
 
 .inputContainer {
   display: flex;
@@ -29,7 +29,7 @@ input {
   height: 52px;
 }
 
-button {
+.addButton {
   justify-content: center;
   padding: 10px 20px;
   border: none;
@@ -44,7 +44,7 @@ button {
   font-size: 16px;
 }
 
-button:hover {
+.addButton:hover {
   background-color: #0056b3;
 }
 
@@ -70,6 +70,18 @@ button:hover {
   background-color: #28a745; /* Green color for edit */
   display: flex;
   align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  width: 100%;
 }
 
 .editButton:hover {
@@ -80,6 +92,18 @@ button:hover {
   background-color: #e25050; /* Red color for delete */
   display: flex;
   align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  width: 100%;
 }
 
 .deleteButton:hover {
@@ -88,6 +112,19 @@ button:hover {
 
 .addButton {
   background-color: #007bff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
 }
 
 .addButton:hover {
@@ -110,10 +147,10 @@ button:hover {
     flex-direction: column;
   }
   .buttonContainer,
-  button {
+  .editButton {
     width: 100%;
   }
-  button {
+  .editButton {
     padding: 10px;
   }
 }

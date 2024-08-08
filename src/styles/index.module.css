@@ -16,10 +16,14 @@
   margin-bottom: 20px;
 }
 
-.sectionHeader::before {
+/* .sectionHeader::before {
   content: "•";
   margin-right: 10px;
   font-size: 24px;
+} */
+
+.required {
+  color: #e25050;
 }
 
 .form {

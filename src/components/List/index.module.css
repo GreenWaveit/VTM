@@ -1,0 +1,122 @@
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filterInput,
+.filterSelect {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.filterSelect {
+  width: 150px;
+}
+
+.studentTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.studentTable th,
+.studentTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.studentTable th {
+  background-color: #f4f4f4;
+}
+
+.inputContainer {
+  margin-bottom: 20px;
+}
+.searchInput {
+  width: calc(50% - 10px); /* Adjust width to fit side by side with margin */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+  margin-right: 10px; /* Space between inputs */
+}
+
+.searchInput:last-of-type {
+  margin-right: 0; /* Remove margin from the last input */
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.noDataMessage {
+  text-align: center;
+  padding: 20px;
+  color: #888;
+}
+
+.paginationContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 20px 0px;
+}
+
+.paginationButton {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+  color: #000;
+}
+
+.paginationButton:disabled {
+  cursor: not-allowed;
+  background-color: #e0e0e0;
+  border-color: #ccc;
+  color: #000;
+}
+
+.paginationButton:hover:not(:disabled) {
+  background-color: #e0e0e0;
+}
+
+.activePage {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.itemsPerPageSelect {
+  margin-left: auto;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+}

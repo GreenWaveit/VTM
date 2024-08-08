@@ -1,6 +1,7 @@
-import React, { useState, useRef, KeyboardEvent } from "react";
-import { FaEdit, FaTrash, FaPlus, FaSyncAlt } from "react-icons/fa"; // Import icons
-import styles from "./index.module.css"; // Use the updated styles
+import React, { useState, useRef, KeyboardEvent, useEffect } from "react";
+import { FaEdit, FaTrash, FaPlus, FaSyncAlt } from "react-icons/fa";
+import Pagination from "../UI/Pagination"; // Import Pagination component
+import styles from "./index.module.css";
 
 interface Todo {
   subject: string;
@@ -9,18 +10,29 @@ interface Todo {
 
 const subjects = ["Math", "Science", "English", "History"]; // Example subjects
 
-const ManageChapters = () => {
+const ManageChapters: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [editIndex, setEditIndex] = useState<number | null>(null);
-  const [selectedSubject, setSelectedSubject] = useState(subjects[0]);
-  const [filterSubject, setFilterSubject] = useState<string>(""); // State for filter
-  const inputRef = useRef<HTMLInputElement>(null); // Reference for the input field
+  const [selectedSubject, setSelectedSubject] = useState<string>("");
+  const [filterSubject, setFilterSubject] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(10);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    // Reset currentPage when itemsPerPage changes
+    setCurrentPage(1);
+  }, [itemsPerPage]);
 
   const handleAddTodo = () => {
+    if (!selectedSubject) {
+      setError("Please select a subject.");
+      return;
+    }
     if (inputValue.trim()) {
       if (editIndex !== null) {
-        // Update existing todo
         const updatedTodos = todos.map((todo, index) =>
           index === editIndex
             ? { subject: selectedSubject, chapter: inputValue }
@@ -28,7 +40,6 @@ const ManageChapters = () => {
         );
         setTodos(updatedTodos);
         setEditIndex(null);
-        // Check if the updated subject matches the filter, if not reset the filter
         if (
           filterSubject &&
           !updatedTodos.some((todo) => todo.subject === filterSubject)
@@ -36,35 +47,43 @@ const ManageChapters = () => {
           setFilterSubject("");
         }
       } else {
-        // Add new todo
         setTodos([...todos, { subject: selectedSubject, chapter: inputValue }]);
       }
       setInputValue("");
+      setSelectedSubject("");
+      setError(null);
       if (inputRef.current) {
-        inputRef.current.focus(); // Focus on input field
+        inputRef.current.focus();
       }
     }
   };
 
   const handleEditTodo = (index: number) => {
-    const todo = filteredTodos[index]; // Get todo from filteredTodos
-    setEditIndex(todos.indexOf(todo)); // Update editIndex to match the index in todos
+    const todo = filteredTodos[index];
+    setEditIndex(todos.indexOf(todo));
     setInputValue(todo.chapter);
-    setSelectedSubject(todo.subject); // Set selectedSubject correctly
+    setSelectedSubject(todo.subject);
     if (inputRef.current) {
-      inputRef.current.focus(); // Focus on input field
+      inputRef.current.focus();
     }
   };
 
   const handleDeleteTodo = (index: number) => {
     const updatedTodos = todos.filter((_, i) => i !== index);
     setTodos(updatedTodos);
-    // Reset edit state if deleting the edited todo
+
+    // Adjust pagination if the last item on the current page is deleted
+    const totalItems = updatedTodos.length;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+
     if (editIndex !== null && editIndex === index) {
       setEditIndex(null);
       setInputValue("");
+      setSelectedSubject("");
     }
-    // Reset filter if necessary
     if (
       filterSubject &&
       !updatedTodos.some((todo) => todo.subject === filterSubject)
@@ -79,13 +98,16 @@ const ManageChapters = () => {
     }
   };
 
-  // Filter todos based on the selected filterSubject
   const filteredTodos = filterSubject
     ? todos.filter((todo) => todo.subject === filterSubject)
     : todos;
 
-  // Extract unique subjects from todos
   const uniqueSubjects = Array.from(new Set(todos.map((todo) => todo.subject)));
+
+  // Pagination logic
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, filteredTodos.length);
+  const displayedTodos = filteredTodos.slice(startIndex, endIndex);
 
   return (
     <div className="container">
@@ -97,20 +119,8 @@ const ManageChapters = () => {
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Enter a new chapter"
-          ref={inputRef} // Attach the ref to the input field
+          ref={inputRef}
         />
-        <select
-          id="subjects"
-          value={selectedSubject}
-          onChange={(e) => setSelectedSubject(e.target.value)}
-          className={styles.select}
-        >
-          {subjects.map((subject) => (
-            <option key={subject} value={subject}>
-              {subject}
-            </option>
-          ))}
-        </select>
         <button
           onClick={handleAddTodo}
           className={
@@ -121,6 +131,20 @@ const ManageChapters = () => {
           {editIndex !== null ? "Update" : "Add"}
         </button>
       </div>
+      {error && <div className={styles.error}>{error}</div>}
+      <select
+        id="subjects"
+        value={selectedSubject}
+        onChange={(e) => setSelectedSubject(e.target.value)}
+        className={styles.select}
+      >
+        <option value="">Select Subject</option>
+        {subjects.map((subject) => (
+          <option key={subject} value={subject}>
+            {subject}
+          </option>
+        ))}
+      </select>
       {uniqueSubjects.length > 1 && (
         <div className={styles.filterContainer}>
           <div>
@@ -142,37 +166,39 @@ const ManageChapters = () => {
         </div>
       )}
       <ul className={styles.todoList}>
-        {filteredTodos.map((todo, index) => (
+        {displayedTodos.map((todo, index) => (
           <li key={index} className={styles.todoItem}>
             <span>
               <span className={styles.chapter}>
-                {index + 1}.{" "}
+                {startIndex + index + 1}.{" "}
                 <span className={styles.highlight}>{todo.subject}</span> -{" "}
                 {todo.chapter}
               </span>
             </span>
             <div className={styles.buttonContainer}>
-              {/* <span className={styles.highlight} style={{ marginRight: 20 }}>
-                {todo.subject}
-              </span> */}
               <button
-                onClick={() => handleEditTodo(index)}
+                onClick={() => handleEditTodo(startIndex + index)}
                 className={styles.editButton}
               >
-                <FaEdit /> {/* Edit icon */}
-                Edit
+                <FaEdit /> Edit
               </button>
               <button
-                onClick={() => handleDeleteTodo(index)}
+                onClick={() => handleDeleteTodo(startIndex + index)}
                 className={styles.deleteButton}
               >
-                <FaTrash /> {/* Delete icon */}
-                Delete
+                <FaTrash /> Delete
               </button>
             </div>
           </li>
         ))}
       </ul>
+      <Pagination
+        totalItems={filteredTodos.length}
+        itemsPerPage={itemsPerPage}
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+        onItemsPerPageChange={setItemsPerPage}
+      />
     </div>
   );
 };

@@ -1,12 +1,20 @@
-import React, { useState, useRef, KeyboardEvent } from "react";
+import React, { useState, useRef, KeyboardEvent, useEffect } from "react";
 import { FaEdit, FaTrash, FaPlus, FaSyncAlt } from "react-icons/fa"; // Import icons
+import Pagination from "../UI/Pagination"; // Import Pagination component
 import styles from "./index.module.css"; // Use the updated styles
 
-const Subject = () => {
+const Subject: React.FC = () => {
   const [todos, setTodos] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(10);
   const inputRef = useRef<HTMLInputElement>(null); // Reference for the input field
+
+  useEffect(() => {
+    // Reset currentPage when itemsPerPage changes
+    setCurrentPage(1);
+  }, [itemsPerPage]);
 
   const handleAddTodo = () => {
     if (inputValue.trim()) {
@@ -39,6 +47,13 @@ const Subject = () => {
   const handleDeleteTodo = (index: number) => {
     const updatedTodos = todos.filter((_, i) => i !== index);
     setTodos(updatedTodos);
+
+    // Adjust pagination if the last item on the current page is deleted
+    const totalItems = updatedTodos.length;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -46,6 +61,11 @@ const Subject = () => {
       handleAddTodo();
     }
   };
+
+  // Calculate the items to display based on current page and items per page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, todos.length);
+  const displayedTodos = todos.slice(startIndex, endIndex);
 
   return (
     <div className="container">
@@ -68,21 +88,21 @@ const Subject = () => {
         </button>
       </div>
       <ul className={styles.todoList}>
-        {todos.map((todo, index) => (
+        {displayedTodos.map((todo, index) => (
           <li key={index} className={styles.todoItem}>
             <span>
-              {index + 1}. {todo}
+              {startIndex + index + 1}. {todo}
             </span>
             <div className={styles.buttonContainer}>
               <button
-                onClick={() => handleEditTodo(index)}
+                onClick={() => handleEditTodo(startIndex + index)}
                 className={styles.editButton}
               >
                 <FaEdit /> {/* Edit icon */}
                 Edit
               </button>
               <button
-                onClick={() => handleDeleteTodo(index)}
+                onClick={() => handleDeleteTodo(startIndex + index)}
                 className={styles.deleteButton}
               >
                 <FaTrash /> {/* Delete icon */}
@@ -92,6 +112,13 @@ const Subject = () => {
           </li>
         ))}
       </ul>
+      <Pagination
+        totalItems={todos.length}
+        itemsPerPage={itemsPerPage}
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+        onItemsPerPageChange={setItemsPerPage}
+      />
     </div>
   );
 };

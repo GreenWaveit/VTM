@@ -9,10 +9,20 @@
   margin: 20px 0;
 }
 
-.sectionHeader::before {
+/* .sectionHeader::before {
   content: "•";
   margin-right: 10px;
   font-size: 24px;
+} */
+
+.select {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.error {
+  color: #e25050;
+  font-size: 14px;
+  margin-bottom: 5px;
 }
 
 .inputContainer {
@@ -35,7 +45,7 @@ input {
   height: 52px;
 }
 
-button {
+.addButton {
   justify-content: center;
   padding: 10px 20px;
   border: none;
@@ -55,7 +65,7 @@ button {
   color: #0070f3; /* Blue color for highlighting */
 }
 
-button:hover {
+.addButton:hover {
   background-color: #0056b3;
 }
 
@@ -81,6 +91,18 @@ button:hover {
   background-color: #28a745; /* Green color for edit */
   display: flex;
   align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  width: 100%;
 }
 
 .editButton:hover {
@@ -91,6 +113,18 @@ button:hover {
   background-color: #e25050; /* Red color for delete */
   display: flex;
   align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  width: 100%;
 }
 
 .deleteButton:hover {
@@ -119,6 +153,7 @@ button:hover {
 @media (max-width: 768px) {
   .inputContainer {
     flex-direction: column;
+    margin-bottom: 10px;
   }
   .todoItem {
     flex-direction: column;
@@ -127,10 +162,13 @@ button:hover {
     padding: 10px 0px;
   }
   .buttonContainer,
-  button {
+  .addButton {
     width: 100%;
   }
-  button {
+  .addButton {
     padding: 10px;
+  }
+  .filterContainer {
+    display: block;
   }
 }

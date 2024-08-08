@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "../../styles/index.module.css";
 
 enum SubjectEnum {
@@ -8,18 +9,25 @@ enum SubjectEnum {
   // Add more subjects as needed
 }
 
+const QualificationEnum = {
+  Bachelors: 1,
+  Masters: 2,
+  PhD: 3,
+  // Add more qualifications as needed
+};
+
 interface FacultyFormInputs {
   name: string;
   username: string;
   email: string;
   password: string;
   contactNumber: string;
-  subjects: SubjectEnum; // Changed to single selection
+  subjects: SubjectEnum; // Single selection for subjects
   cv: File | null;
   qualification: number;
-  aadhar: number;
+  aadhar: string;
   pan: string;
-  bankAccount: number;
+  bankAccount: string;
   ifsc: string;
 }
 
@@ -31,10 +39,10 @@ const initialFormState: FacultyFormInputs = {
   contactNumber: "",
   subjects: SubjectEnum["Math"], // Default value
   cv: null,
-  qualification: 0,
-  aadhar: 0,
+  qualification: 1,
+  aadhar: "",
   pan: "",
-  bankAccount: 0,
+  bankAccount: "",
   ifsc: "",
 };
 
@@ -43,6 +51,7 @@ const FacultyRegister: React.FC = () => {
   const [errors, setErrors] = useState<
     Partial<Record<keyof FacultyFormInputs, string>>
   >({});
+  const router = useNavigate();
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -51,10 +60,27 @@ const FacultyRegister: React.FC = () => {
   ) => {
     const { name, type, value, files } = e.target as HTMLInputElement; // Type casting to HTMLInputElement
 
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: type === "file" ? files?.[0] || null : value,
-    }));
+    if (type === "file") {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: files?.[0] || null,
+      }));
+    } else if (
+      name === "contactNumber" ||
+      name === "aadhar" ||
+      name === "bankAccount"
+    ) {
+      // Allow only numeric input for these fields
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value.replace(/[^0-9]/g, ""),
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   const handleFocus = (
@@ -81,11 +107,15 @@ const FacultyRegister: React.FC = () => {
     if (!formData.password) newErrors.password = "Password is required";
     if (!formData.contactNumber)
       newErrors.contactNumber = "Contact Number is required";
+    else if (formData.contactNumber.length !== 10)
+      newErrors.contactNumber = "Contact Number must be 10 digits";
     if (!formData.subjects) newErrors.subjects = "Subject is required";
     if (!formData.cv) newErrors.cv = "CV is required";
     if (!formData.qualification)
       newErrors.qualification = "Qualification is required";
     if (!formData.aadhar) newErrors.aadhar = "Aadhar Number is required";
+    else if (formData.aadhar.length !== 12)
+      newErrors.aadhar = "Aadhar Number must be 12 digits";
     if (!formData.pan) newErrors.pan = "PAN Number is required";
     if (!formData.bankAccount)
       newErrors.bankAccount = "Bank Account Number is required";
@@ -96,6 +126,7 @@ const FacultyRegister: React.FC = () => {
     } else {
       setErrors({});
       console.log(formData);
+      router("/faculty-list"); // Redirect after successful submission
     }
   };
 
@@ -109,7 +140,9 @@ const FacultyRegister: React.FC = () => {
       <div className={styles.sectionHeader}>Faculty Registration</div>
       <form className={styles.form}>
         <div className={styles.formGroup}>
-          <label htmlFor="name">Name:</label>
+          <label htmlFor="name">
+            Name<span style={{ color: "#e25050" }}>*</span>
+          </label>
           <input
             type="text"
             id="name"
@@ -123,7 +156,9 @@ const FacultyRegister: React.FC = () => {
           {errors.name && <p className={styles.errorText}>{errors.name}</p>}
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="username">
+            Username<span style={{ color: "#e25050" }}>*</span>
+          </label>
           <input
             type="text"
             id="username"
@@ -139,7 +174,9 @@ const FacultyRegister: React.FC = () => {
           )}
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="email">
+            Email<span style={{ color: "#e25050" }}>*</span>
+          </label>
           <input
             type="email"
             id="email"
@@ -153,7 +190,9 @@ const FacultyRegister: React.FC = () => {
           {errors.email && <p className={styles.errorText}>{errors.email}</p>}
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="password">
+            Password<span style={{ color: "#e25050" }}>*</span>
+          </label>
           <input
             type="password"
             id="password"
@@ -169,7 +208,9 @@ const FacultyRegister: React.FC = () => {
           )}
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="contactNumber">Contact Number:</label>
+          <label htmlFor="contactNumber">
+            Contact Number<span style={{ color: "#e25050" }}>*</span>
+          </label>
           <input
             type="text"
             id="contactNumber"
@@ -178,6 +219,8 @@ const FacultyRegister: React.FC = () => {
             onChange={handleChange}
             onFocus={handleFocus}
             placeholder="Enter your contact number"
+            maxLength={10}
+            pattern="\d*"
             className={errors.contactNumber ? styles.errorInput : ""}
           />
           {errors.contactNumber && (
@@ -185,7 +228,9 @@ const FacultyRegister: React.FC = () => {
           )}
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="subjects">Subjects:</label>
+          <label htmlFor="subjects">
+            Subjects<span style={{ color: "#e25050" }}>*</span>
+          </label>
           <select
             id="subjects"
             name="subjects"
@@ -205,7 +250,9 @@ const FacultyRegister: React.FC = () => {
           )}
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="cv">CV:</label>
+          <label htmlFor="cv">
+            CV<span style={{ color: "#e25050" }}>*</span>
+          </label>
           <input
             type="file"
             id="cv"
@@ -217,37 +264,49 @@ const FacultyRegister: React.FC = () => {
           {errors.cv && <p className={styles.errorText}>{errors.cv}</p>}
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="qualification">Qualification:</label>
-          <input
-            type="number"
+          <label htmlFor="qualification">
+            Qualification<span style={{ color: "#e25050" }}>*</span>
+          </label>
+          <select
             id="qualification"
             name="qualification"
             value={formData.qualification}
             onChange={handleChange}
             onFocus={handleFocus}
-            placeholder="Enter qualification ID"
             className={errors.qualification ? styles.errorInput : ""}
-          />
+          >
+            {Object.entries(QualificationEnum).map(([qual, id]) => (
+              <option key={id} value={id}>
+                {qual}
+              </option>
+            ))}
+          </select>
           {errors.qualification && (
             <p className={styles.errorText}>{errors.qualification}</p>
           )}
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="aadhar">Aadhar Number:</label>
+          <label htmlFor="aadhar">
+            Aadhar Number<span style={{ color: "#e25050" }}>*</span>
+          </label>
           <input
-            type="number"
+            type="text"
             id="aadhar"
             name="aadhar"
             value={formData.aadhar}
             onChange={handleChange}
             onFocus={handleFocus}
-            placeholder="Enter your Aadhar number"
+            placeholder="Enter your Aadhar Number"
+            maxLength={12}
+            pattern="\d*"
             className={errors.aadhar ? styles.errorInput : ""}
           />
           {errors.aadhar && <p className={styles.errorText}>{errors.aadhar}</p>}
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="pan">PAN Number:</label>
+          <label htmlFor="pan">
+            PAN Number<span style={{ color: "#e25050" }}>*</span>
+          </label>
           <input
             type="text"
             id="pan"
@@ -255,21 +314,24 @@ const FacultyRegister: React.FC = () => {
             value={formData.pan}
             onChange={handleChange}
             onFocus={handleFocus}
-            placeholder="Enter your PAN number"
+            placeholder="Enter your PAN Number"
             className={errors.pan ? styles.errorInput : ""}
           />
           {errors.pan && <p className={styles.errorText}>{errors.pan}</p>}
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="bankAccount">Bank Account Number:</label>
+          <label htmlFor="bankAccount">
+            Bank Account Number<span style={{ color: "#e25050" }}>*</span>
+          </label>
           <input
-            type="number"
+            type="text"
             id="bankAccount"
             name="bankAccount"
             value={formData.bankAccount}
             onChange={handleChange}
             onFocus={handleFocus}
-            placeholder="Enter your bank account number"
+            placeholder="Enter your Bank Account Number"
+            pattern="\d*"
             className={errors.bankAccount ? styles.errorInput : ""}
           />
           {errors.bankAccount && (
@@ -277,7 +339,9 @@ const FacultyRegister: React.FC = () => {
           )}
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="ifsc">IFSC:</label>
+          <label htmlFor="ifsc">
+            IFSC<span style={{ color: "#e25050" }}>*</span>
+          </label>
           <input
             type="text"
             id="ifsc"
@@ -285,17 +349,18 @@ const FacultyRegister: React.FC = () => {
             value={formData.ifsc}
             onChange={handleChange}
             onFocus={handleFocus}
-            placeholder="Enter your bank IFSC code"
+            placeholder="Enter your IFSC code"
             className={errors.ifsc ? styles.errorInput : ""}
           />
           {errors.ifsc && <p className={styles.errorText}>{errors.ifsc}</p>}
         </div>
       </form>
-      <div className="termsText">
-        By Signing Up, you agree to our <a href="#">Terms of Use</a> &amp;{" "}
-        <a href="#">Privacy Policy</a>
-      </div>
-      <button type="button" onClick={handleSubmit} className="submitButton">
+      <button
+        type="button"
+        onClick={handleSubmit}
+        className="submitButton"
+        style={{ marginTop: 20 }}
+      >
         Submit
       </button>
     </div>

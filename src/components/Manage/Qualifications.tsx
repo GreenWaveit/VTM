@@ -1,29 +1,35 @@
-import React, { useState, useRef, KeyboardEvent } from "react";
-import { FaEdit, FaTrash, FaPlus, FaSyncAlt } from "react-icons/fa"; // Import icons
-import styles from "./index.module.css"; // Use the updated styles
+import React, { useState, useRef, KeyboardEvent, useEffect } from "react";
+import { FaEdit, FaTrash, FaPlus, FaSyncAlt } from "react-icons/fa";
+import Pagination from "../UI/Pagination"; // Import Pagination component
+import styles from "./index.module.css";
 
-const Qualification = () => {
+const Qualification: React.FC = () => {
   const [todos, setTodos] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [editIndex, setEditIndex] = useState<number | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null); // Reference for the input field
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(10);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    // Reset currentPage when itemsPerPage changes
+    setCurrentPage(1);
+  }, [itemsPerPage]);
 
   const handleAddTodo = () => {
     if (inputValue.trim()) {
       if (editIndex !== null) {
-        // Update existing todo
         const updatedTodos = todos.map((todo, index) =>
           index === editIndex ? inputValue : todo
         );
         setTodos(updatedTodos);
         setEditIndex(null);
       } else {
-        // Add new todo
         setTodos([...todos, inputValue]);
       }
       setInputValue("");
       if (inputRef.current) {
-        inputRef.current.focus(); // Focus on input field
+        inputRef.current.focus();
       }
     }
   };
@@ -32,7 +38,7 @@ const Qualification = () => {
     setEditIndex(index);
     setInputValue(todos[index]);
     if (inputRef.current) {
-      inputRef.current.focus(); // Focus on input field
+      inputRef.current.focus();
     }
   };
 
@@ -47,6 +53,20 @@ const Qualification = () => {
     }
   };
 
+  const totalItems = todos.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+  const displayedTodos = todos.slice(startIndex, endIndex);
+
+  // Handle the case where the last item on the last page is deleted
+  useEffect(() => {
+    if (todos.length > 0 && startIndex >= todos.length) {
+      setCurrentPage(currentPage - 1);
+    }
+  }, [todos.length, startIndex, currentPage]);
+  // This useEffect is added to handle pagination adjustment when the last item on the last page is deleted
+
   return (
     <div className="container">
       <div className={styles.sectionHeader}>Manage Qualification</div>
@@ -57,41 +77,51 @@ const Qualification = () => {
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Enter a new qualification"
-          ref={inputRef} // Attach the ref to the input field
+          ref={inputRef}
         />
         <button
           onClick={handleAddTodo}
-          className={editIndex !== null ? styles.addButton : styles.addButton}
+          className={
+            editIndex !== null ? styles.updateButton : styles.addButton
+          }
         >
           {editIndex !== null ? <FaSyncAlt /> : <FaPlus />}
           {editIndex !== null ? "Update" : "Add"}
         </button>
       </div>
       <ul className={styles.todoList}>
-        {todos.map((todo, index) => (
+        {displayedTodos.map((todo, index) => (
           <li key={index} className={styles.todoItem}>
             <span>
-              {index + 1}. {todo}
+              {startIndex + index + 1}. {todo}
             </span>
             <div className={styles.buttonContainer}>
               <button
-                onClick={() => handleEditTodo(index)}
+                onClick={() => handleEditTodo(startIndex + index)}
                 className={styles.editButton}
               >
-                <FaEdit /> {/* Edit icon */}
-                Edit
+                <FaEdit /> Edit
               </button>
               <button
-                onClick={() => handleDeleteTodo(index)}
+                onClick={() => handleDeleteTodo(startIndex + index)}
                 className={styles.deleteButton}
               >
-                <FaTrash /> {/* Delete icon */}
-                Delete
+                <FaTrash /> Delete
               </button>
             </div>
           </li>
         ))}
       </ul>
+      {todos.length > itemsPerPage && (
+        <Pagination
+          totalItems={totalItems}
+          itemsPerPage={itemsPerPage}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          onItemsPerPageChange={setItemsPerPage}
+        />
+      )}
+      {/* This condition ensures Pagination is only rendered when necessary */}
     </div>
   );
 };

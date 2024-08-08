@@ -2,21 +2,22 @@ import React, { useState } from "react";
 import styles from "./index.module.css";
 
 const Login: React.FC = () => {
-  const [formData, setFormData] = useState<{ email: string; password: string }>(
-    {
-      email: "",
-      password: "",
-    }
-  );
+  const [formData, setFormData] = useState<{
+    username: string;
+    password: string;
+  }>({
+    username: "",
+    password: "",
+  });
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [errors, setErrors] = useState<{ email: string; password: string }>({
-    email: "",
+  const [errors, setErrors] = useState<{ username: string; password: string }>({
+    username: "",
     password: "",
   });
 
-  const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+  const validateUsername = (username: string): boolean => {
+    const usernameRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return usernameRegex.test(username);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,13 +29,13 @@ const Login: React.FC = () => {
     e.preventDefault();
 
     let valid = true;
-    const newErrors = { email: "", password: "" };
+    const newErrors = { username: "", password: "" };
 
-    if (!formData.email) {
-      newErrors.email = "Email is required";
+    if (!formData.username) {
+      newErrors.username = "Username is required";
       valid = false;
-    } else if (!validateEmail(formData.email)) {
-      newErrors.email = "Invalid email format";
+    } else if (!validateUsername(formData.username)) {
+      newErrors.username = "Invalid username format";
       valid = false;
     }
 
@@ -55,16 +56,18 @@ const Login: React.FC = () => {
       <form onSubmit={handleSubmit} className={styles["login-form"]}>
         <h2>Login to your Account</h2>
         <div className={styles["form-group"]}>
-          <label htmlFor="email">Email</label>
+          <label htmlFor="username">Username</label>
           <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Enter mobile number"
-            value={formData.email}
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Enter your username"
+            value={formData.username}
             onChange={handleChange}
           />
-          {errors.email && <span className={styles.error}>{errors.email}</span>}
+          {errors.username && (
+            <span className={styles.error}>{errors.username}</span>
+          )}
         </div>
         <div className={styles["form-group"]}>
           <label htmlFor="password">Password</label>
@@ -96,10 +99,10 @@ const Login: React.FC = () => {
         <button type="submit" className={styles["submit-button"]}>
           Login
         </button>
-        <p className={styles.register}>
+        {/* <p className={styles.register}>
           Don't have an account?{" "}
           <a href="/college-register">Register for free</a>
-        </p>
+        </p> */}
       </form>
     </div>
   );

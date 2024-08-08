@@ -51,7 +51,7 @@ input {
 .eye-icon {
   position: absolute;
   right: 10px;
-  top: 7px;
+  top: 12px;
   background: none;
   border: none;
   cursor: pointer;
@@ -61,6 +61,7 @@ input {
 
 .eye-icon:hover {
   color: #0056b3;
+  background-color: transparent !important;
 }
 
 .error {

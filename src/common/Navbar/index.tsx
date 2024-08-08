@@ -34,6 +34,9 @@ const Navbar = () => {
           <option value="/map-faculty-subject">Map faculty to subject</option>
           <option value="/map-faculty-college">Map faculty to college</option>
           <option value="/self-study">Slef study</option>
+          <option value="/students-list">List of students</option>
+          <option value="/college-list">List of colleges</option>
+          <option value="/faculty-list">List of faculty</option>
         </select>
       </div>
     </div>
