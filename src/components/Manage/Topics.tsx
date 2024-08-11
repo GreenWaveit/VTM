@@ -182,9 +182,7 @@ const ManageTopic: React.FC = () => {
         </select>
         <button
           onClick={handleAddTopic}
-          className={
-            editIndex !== null ? styles.updateButton : styles.addButton
-          }
+          className={editIndex !== null ? "updateButton" : "addButton"}
         >
           {editIndex !== null ? <FaEdit /> : <FaPlus />}
           {editIndex !== null ? "Update" : "Add"}
@@ -248,20 +246,20 @@ const ManageTopic: React.FC = () => {
             <li key={index} className={styles.todoItem}>
               <span>
                 {startIndex + index + 1}.{" "}
-                <span className={styles.highlight}>{topic.subject}</span> -{" "}
-                <span className={styles.highlight}>{topic.chapter}</span> :{" "}
+                <span className={styles.highlight}>{topic.chapter}</span> -{" "}
+                <span className={styles.highlight}>{topic.subject}</span> :{" "}
                 {topic.topic}
               </span>
               <div className={styles.buttonContainer}>
                 <button
                   onClick={() => handleEditTopic(index)}
-                  className={styles.editButton}
+                  className="editButton"
                 >
                   <FaEdit /> Edit
                 </button>
                 <button
                   onClick={() => handleDeleteTopic(index)}
-                  className={styles.deleteButton}
+                  className="deleteButton"
                 >
                   <FaTrash /> Delete
                 </button>

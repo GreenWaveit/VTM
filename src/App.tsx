@@ -15,6 +15,7 @@ import SelfStudy from "./components/Manage/SelfStudy";
 import ListOfStudent from "./components/List/StudentList";
 import ListOfCollege from "./components/List/CollegeList";
 import ListOfFaculty from "./components/List/FacultyList";
+import QuestionBankManagement from "./components/QuestionBankManagement";
 
 const App = () => {
   return (
@@ -42,6 +43,10 @@ const App = () => {
         <Route path="/students-list" element={<ListOfStudent />} />
         <Route path="/college-list" element={<ListOfCollege />} />
         <Route path="/faculty-list" element={<ListOfFaculty />} />
+        <Route
+          path="/question-bank-management"
+          element={<QuestionBankManagement />}
+        />
       </Routes>
       {/* <Footer /> */}
     </Router>

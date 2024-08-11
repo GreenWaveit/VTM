@@ -120,7 +120,7 @@ const FacultyToCollegeMapping: React.FC = () => {
           onChange={handleCollegesChange}
           placeholder="Select colleges"
         />
-        <button onClick={handleSubmit} className={styles.addButton}>
+        <button onClick={handleSubmit} className="addButton">
           {editingIndex !== null ? <FaSyncAlt /> : <FaPlus />}
           {editingIndex !== null ? "Update" : "Add"}
         </button>
@@ -152,14 +152,14 @@ const FacultyToCollegeMapping: React.FC = () => {
               <div className={styles.buttonContainer}>
                 <button
                   onClick={() => handleEditAssignment(startIndex + index)}
-                  className={styles.editButton}
+                  className="editButton"
                 >
                   <FaEdit /> {/* Edit icon */}
                   Edit
                 </button>
                 <button
                   onClick={() => handleDeleteAssignment(startIndex + index)}
-                  className={styles.deleteButton}
+                  className="deleteButton"
                 >
                   <FaTrash /> {/* Delete icon */}
                   Delete

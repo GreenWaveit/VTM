@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import styles from "./index.module.css"; // Import your styles
 
 interface College {
@@ -16,22 +16,6 @@ const collegeData: College[] = [
   { number: 7, name: "University of Chicago" },
   { number: 8, name: "Imperial College London" },
   { number: 9, name: "ETH Zurich" },
-  { number: 10, name: "University College London (UCL)" },
-  { number: 11, name: "University of Pennsylvania" },
-  { number: 12, name: "University of California, Berkeley" },
-  { number: 13, name: "Princeton University" },
-  { number: 14, name: "University of California, Los Angeles (UCLA)" },
-  { number: 15, name: "Yale University" },
-  { number: 16, name: "University of Michigan, Ann Arbor" },
-  { number: 17, name: "University of California, San Diego (UCSD)" },
-  { number: 18, name: "University of Edinburgh" },
-  { number: 19, name: "University of Toronto" },
-  { number: 20, name: "University of California, Irvine (UCI)" },
-  { number: 21, name: "University of Washington" },
-  { number: 22, name: "University of Hong Kong (HKU)" },
-  { number: 23, name: "University of Melbourne" },
-  { number: 24, name: "University of Sydney" },
-  { number: 25, name: "National University of Singapore (NUS)" },
 ];
 
 const CollegeList: React.FC = () => {
@@ -39,11 +23,7 @@ const CollegeList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage] = useState<number>(10);
 
-  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-    setCurrentPage(1); // Reset to the first page on search
-  };
-
+  // Filter the entire dataset
   const filteredColleges = collegeData.filter((college) =>
     college.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -51,12 +31,24 @@ const CollegeList: React.FC = () => {
   const totalItems = filteredColleges.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
+  // Determine the range of colleges to display on the current page
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
   const displayedColleges = filteredColleges.slice(startIndex, endIndex);
 
+  useEffect(() => {
+    // Reset to the first page when search term changes
+    setCurrentPage(1);
+  }, [searchTerm]);
+
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
   };
 
   return (
@@ -70,30 +62,32 @@ const CollegeList: React.FC = () => {
           className={styles.searchInput}
         />
       </div>
-      <table className={styles.studentTable}>
-        <thead>
-          <tr>
-            <th>Number</th>
-            <th>College Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          {displayedColleges.length === 0 ? (
+      <div className={styles.tableWrapper}>
+        <table className={styles.studentTable}>
+          <thead>
             <tr>
-              <td colSpan={2} className={styles.noDataMessage}>
-                No colleges found
-              </td>
+              <th>Number</th>
+              <th>College Name</th>
             </tr>
-          ) : (
-            displayedColleges.map((college) => (
-              <tr key={college.number}>
-                <td data-label="Number">{college.number}</td>
-                <td data-label="College Name">{college.name}</td>
+          </thead>
+          <tbody>
+            {displayedColleges.length === 0 ? (
+              <tr>
+                <td colSpan={2} className={styles.noDataMessage}>
+                  No colleges found
+                </td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+            ) : (
+              displayedColleges.map((college) => (
+                <tr key={college.number}>
+                  <td data-label="Number">{college.number}</td>
+                  <td data-label="College Name">{college.name}</td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
       {totalItems > itemsPerPage && (
         <div className={styles.paginationContainer}>
           <button

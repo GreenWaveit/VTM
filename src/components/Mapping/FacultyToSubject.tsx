@@ -126,7 +126,7 @@ const FacultyToSubjectMapping: React.FC = () => {
           onChange={handleSubjectsChange}
           placeholder="Select subjects"
         />
-        <button onClick={handleSubmit} className={styles.addButton}>
+        <button onClick={handleSubmit} className="addButton">
           {editingIndex !== null ? <FaSyncAlt /> : <FaPlus />}
           {editingIndex !== null ? "Update" : "Add"}
         </button>
@@ -155,14 +155,14 @@ const FacultyToSubjectMapping: React.FC = () => {
               <div className={styles.buttonContainer}>
                 <button
                   onClick={() => handleEditMapping(startIndex + index)}
-                  className={styles.editButton}
+                  className="editButton"
                 >
                   <FaEdit /> {/* Edit icon */}
                   Edit
                 </button>
                 <button
                   onClick={() => handleDeleteMapping(startIndex + index)}
-                  className={styles.deleteButton}
+                  className="deleteButton"
                 >
                   <FaTrash /> {/* Delete icon */}
                   Delete

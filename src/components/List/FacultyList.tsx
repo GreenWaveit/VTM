@@ -17,11 +17,6 @@ const facultyData: Faculty[] = [
   { number: 7, name: "Ms. Green", subjects: ["English", "History"] },
   { number: 8, name: "Mr. Blue", subjects: ["Geography", "Math"] },
   { number: 9, name: "Dr. Gray", subjects: ["Science", "Biology"] },
-  { number: 10, name: "Prof. Red", subjects: ["Chemistry", "Physics"] },
-  { number: 11, name: "Prof. Black", subjects: ["Physics", "Math"] },
-  { number: 12, name: "Ms. Green", subjects: ["English", "History"] },
-  { number: 13, name: "Mr. Blue", subjects: ["Geography", "Math"] },
-  { number: 14, name: "Dr. Gray", subjects: ["Science", "Biology"] },
 ];
 
 const ListOfFaculty: React.FC = () => {

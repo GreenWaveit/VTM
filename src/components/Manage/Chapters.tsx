@@ -123,9 +123,7 @@ const ManageChapters: React.FC = () => {
         />
         <button
           onClick={handleAddTodo}
-          className={
-            editIndex !== null ? styles.updateButton : styles.addButton
-          }
+          className={editIndex !== null ? "updateButton" : "addButton"}
         >
           {editIndex !== null ? <FaSyncAlt /> : <FaPlus />}
           {editIndex !== null ? "Update" : "Add"}
@@ -178,13 +176,13 @@ const ManageChapters: React.FC = () => {
             <div className={styles.buttonContainer}>
               <button
                 onClick={() => handleEditTodo(startIndex + index)}
-                className={styles.editButton}
+                className="editButton"
               >
                 <FaEdit /> Edit
               </button>
               <button
                 onClick={() => handleDeleteTodo(startIndex + index)}
-                className={styles.deleteButton}
+                className="deleteButton"
               >
                 <FaTrash /> Delete
               </button>

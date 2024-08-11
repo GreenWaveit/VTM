@@ -183,7 +183,7 @@ const SelfStudy: React.FC = () => {
             <p>Add study material</p>
           )}
         </div>
-        <button onClick={handleSubmit} className={styles.addButton}>
+        <button onClick={handleSubmit} className="addButton">
           {editIndex !== null ? "Update" : "Submit"}
         </button>
       </div>
@@ -200,13 +200,13 @@ const SelfStudy: React.FC = () => {
             <div className={styles.buttonContainer}>
               <button
                 onClick={() => handleEditMaterial(index)}
-                className={styles.editButton}
+                className="editButton"
               >
                 <FaEdit /> Edit
               </button>
               <button
                 onClick={() => handleDeleteMaterial(index)}
-                className={styles.deleteButton}
+                className="deleteButton"
               >
                 <FaTrash /> Delete
               </button>
@@ -215,7 +215,7 @@ const SelfStudy: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <button className={styles.addButton}>
+                <button className="addButton">
                   <FaEye /> View
                 </button>
               </a>

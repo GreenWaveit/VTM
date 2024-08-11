@@ -9,9 +9,13 @@
   box-sizing: border-box;
 }
 
+.searchInput:focus {
+  border-color: black; /* Border color turns black when focused */
+}
+
 .dropdownMenu {
   position: absolute;
-  top: 100%;
+  top: 102%;
   left: 0;
   width: 100%;
   border: 1px solid #ccc;
@@ -19,10 +23,12 @@
   max-height: 200px;
   overflow-y: auto;
   z-index: 1000;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
 .dropdownOption {
-  padding: 8px;
+  padding: 10px;
   cursor: pointer;
 }
 

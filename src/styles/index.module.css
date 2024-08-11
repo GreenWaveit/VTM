@@ -16,11 +16,12 @@
   margin-bottom: 20px;
 }
 
-/* .sectionHeader::before {
-  content: "•";
-  margin-right: 10px;
-  font-size: 24px;
-} */
+.searchLayout {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
 
 .required {
   color: #e25050;
@@ -56,8 +57,7 @@ select {
 
 input:focus,
 select:focus {
-  border-color: #007bff;
-  outline: none;
+  border-color: #000;
 }
 
 .errorInput {
@@ -100,8 +100,121 @@ select:focus {
   text-decoration: underline;
 }
 
+.addButton {
+  justify-content: center;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  height: 100%;
+  width: 100%;
+}
+
+.addButton:hover {
+  background-color: #0056b3;
+}
+
+.answerContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-gap: 20px;
+}
+
+.questionInput {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 8px 0px 0pc 8px;
+  background-color: #f5f5f5;
+  margin-bottom: 20px;
+}
+
+.answerRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.correctAnswerCheckbox {
+  flex: 0.5;
+  width: 28px;
+  height: 28px !important;
+}
+
+.questionsList {
+  margin-top: 40px;
+}
+
+.questionItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0px;
+  border-bottom: 1px solid #ddd;
+}
+
+.todoList {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.todoList div {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.question {
+  margin: 20px 0px;
+}
+
+@media (max-width: 1200px) {
+  .answerContainer {
+    grid-template-columns: 1fr 1fr;
+  }
+  .correctAnswerCheckbox {
+    flex: 0.1;
+  }
+
+  .answerInput {
+    flex: 0.9;
+  }
+}
+
 @media (max-width: 768px) {
+  .answerContainer {
+    grid-template-columns: 1fr;
+    margin-bottom: 20px;
+  }
+
+  .searchLayout {
+    flex-direction: column;
+  }
+
   .formGroup {
     flex: 1 1 100%; /* Full width for single-column layout */
+  }
+  .questionItem {
+    flex-direction: column;
+    align-items: self-start;
+  }
+  .actions {
+    width: 100%;
+  }
+  .answerRow {
+    margin: 0;
   }
 }

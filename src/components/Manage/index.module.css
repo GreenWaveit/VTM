@@ -45,30 +45,6 @@ input {
   height: 52px;
 }
 
-.addButton {
-  justify-content: center;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 16px;
-}
-
-.highlight {
-  font-weight: bold;
-  color: #0070f3; /* Blue color for highlighting */
-}
-
-.addButton:hover {
-  background-color: #0056b3;
-}
-
 .todoList {
   list-style-type: none;
   padding: 0;
@@ -85,58 +61,6 @@ input {
 .buttonContainer {
   display: flex;
   gap: 10px;
-}
-
-.editButton {
-  background-color: #28a745; /* Green color for edit */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 16px;
-  width: 100%;
-}
-
-.editButton:hover {
-  background-color: #218838; /* Darker green for hover */
-}
-
-.deleteButton {
-  background-color: #e25050; /* Red color for delete */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 16px;
-  width: 100%;
-}
-
-.deleteButton:hover {
-  background-color: #c0392b; /* Darker red for hover */
-}
-
-.addButton {
-  background-color: #007bff;
-}
-
-.addButton:hover {
-  background-color: #0056b3;
 }
 
 .filterContainer {
@@ -161,12 +85,8 @@ input {
     align-items: self-start;
     padding: 10px 0px;
   }
-  .buttonContainer,
-  .addButton {
+  .buttonContainer {
     width: 100%;
-  }
-  .addButton {
-    padding: 10px;
   }
   .filterContainer {
     display: block;
