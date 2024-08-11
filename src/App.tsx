@@ -16,6 +16,8 @@ import ListOfStudent from "./components/List/StudentList";
 import ListOfCollege from "./components/List/CollegeList";
 import ListOfFaculty from "./components/List/FacultyList";
 import QuestionBankManagement from "./components/QuestionBankManagement";
+import QuestionsList from "./components/QuestionBankManagement/List";
+import CreateTest from "./components/Assessment/Create";
 
 const App = () => {
   return (
@@ -47,7 +49,10 @@ const App = () => {
           path="/question-bank-management"
           element={<QuestionBankManagement />}
         />
+        <Route path="/question-list" element={<QuestionsList />} />
+        <Route path="/create-test" element={<CreateTest />} />
       </Routes>
+
       {/* <Footer /> */}
     </Router>
   );

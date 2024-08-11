@@ -40,6 +40,8 @@ const Navbar = () => {
           <option value="/question-bank-management">
             Question bank management
           </option>
+          <option value="/question-list">Questions List</option>
+          <option value="/create-test">Create test</option>
         </select>
       </div>
     </div>

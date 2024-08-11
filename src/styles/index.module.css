@@ -181,6 +181,123 @@ select:focus {
   margin: 20px 0px;
 }
 
+.filters {
+  display: flex;
+  align-items: self-start;
+  gap: 20px;
+  margin-top: 20px;
+}
+.filterGroup {
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.filterGroup label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.action {
+  display: flex;
+  justify-content: space-evenly; /* Adjusts the spacing between buttons */
+  align-items: center; /* Centers the buttons vertically */
+  gap: 10px; /* Adds space between the buttons */
+}
+
+.questionsListContainer {
+  padding: 1rem;
+}
+
+.questionsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 50px;
+}
+
+.questionsTable th,
+.questionsTable td {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.questionsTable th {
+  background-color: #f4f4f4;
+}
+
+/* // */
+
+.selectContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+.selectedQuestions {
+  margin: 20px 0px;
+}
+
+.selectedQuestions h4 {
+  margin-bottom: 4px;
+}
+
+.selectedQuestions ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.selectedQuestions li {
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.options {
+  margin-top: 10px;
+}
+
+.options div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.options input[type="radio"] {
+  margin-right: 10px;
+}
+
+.testTitle {
+  margin-top: 20px;
+}
+
+.testTitle label {
+  font-weight: bold;
+}
+
+.testTitle input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.selectedOptions {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Creates two columns */
+}
+
+.selectedOptions div {
+  display: grid;
+  grid-template-columns: 5% 95%;
+  grid-gap: 8px;
+  align-items: center;
+}
+
 @media (max-width: 1200px) {
   .answerContainer {
     grid-template-columns: 1fr 1fr;
@@ -216,5 +333,19 @@ select:focus {
   }
   .answerRow {
     margin: 0;
+  }
+  .filters {
+    flex-direction: column;
+    gap: 0;
+  }
+  .selectContainer {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .selectedOptions {
+    grid-template-columns: 1fr;
+  }
+  .selectedOptions div {
+    grid-template-columns: 10% 90%;
   }
 }
