@@ -18,6 +18,7 @@ import ListOfFaculty from "./components/List/FacultyList";
 import QuestionBankManagement from "./components/QuestionBankManagement";
 import QuestionsList from "./components/QuestionBankManagement/List";
 import CreateTest from "./components/Assessment/Create";
+import TestResults from "./components/Results/index";
 
 const App = () => {
   return (
@@ -51,6 +52,7 @@ const App = () => {
         />
         <Route path="/question-list" element={<QuestionsList />} />
         <Route path="/create-test" element={<CreateTest />} />
+        <Route path="/test-results" element={<TestResults />} />
       </Routes>
 
       {/* <Footer /> */}

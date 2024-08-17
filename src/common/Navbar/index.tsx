@@ -41,7 +41,8 @@ const Navbar = () => {
             Question bank management
           </option>
           <option value="/question-list">Questions List</option>
-          <option value="/create-test">Create test</option>
+          <option value="/create-test">Create Test</option>
+          <option value="/test-results">Test Tesults</option>
         </select>
       </div>
     </div>

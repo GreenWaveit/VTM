@@ -24,6 +24,7 @@ interface StudentFormInputs {
   email?: string;
   username: string;
   password: string;
+  rollNo: string;
   college: CollegeEnum;
   class: ClassEnum;
   academicYear: AcademicYearEnum;
@@ -36,6 +37,7 @@ const initialFormState: StudentFormInputs = {
   email: "",
   username: "",
   password: "",
+  rollNo: "",
   college: CollegeEnum["Harvard"],
   class: ClassEnum["1 PU"],
   academicYear: AcademicYearEnum["2024-25"],
@@ -85,6 +87,7 @@ const StudentRegister: React.FC = () => {
       newErrors.email = "Invalid email address";
     if (!formData.username) newErrors.username = "Username is required";
     if (!formData.password) newErrors.password = "Password is required";
+    if (!formData.rollNo) newErrors.rollNo = "Roll No is required";
     if (!formData.college) newErrors.college = "College is required";
     if (!formData.class) newErrors.class = "Class is required";
     if (!formData.academicYear)
@@ -176,6 +179,22 @@ const StudentRegister: React.FC = () => {
           )}
         </div>
         <div className={styles.formGroup}>
+          <label htmlFor="rollNo">
+            Roll No<span className={styles.required}>*</span>
+          </label>
+          <input
+            type="text"
+            id="rollNo"
+            name="rollNo"
+            value={formData.rollNo}
+            onChange={handleChange}
+            onFocus={handleFocus}
+            placeholder="Enter your roll number"
+            className={errors.rollNo ? styles.errorInput : ""}
+          />
+          {errors.rollNo && <p className={styles.errorText}>{errors.rollNo}</p>}
+        </div>
+        <div className={styles.formGroup}>
           <label htmlFor="college">
             College<span className={styles.required}>*</span>
           </label>
@@ -244,13 +263,7 @@ const StudentRegister: React.FC = () => {
             onChange={handleChange}
             onFocus={handleFocus}
             placeholder="Enter contact number"
-            maxLength={10}
             className={errors.contactNumber1 ? styles.errorInput : ""}
-            onKeyPress={(e) => {
-              if (!/^\d$/.test(e.key)) {
-                e.preventDefault();
-              }
-            }}
           />
           {errors.contactNumber1 && (
             <p className={styles.errorText}>{errors.contactNumber1}</p>
@@ -265,23 +278,17 @@ const StudentRegister: React.FC = () => {
             value={formData.contactNumber2}
             onChange={handleChange}
             onFocus={handleFocus}
-            placeholder="Enter contact number"
-            maxLength={10}
-            className={errors.contactNumber2 ? styles.errorInput : ""}
-            onKeyPress={(e) => {
-              if (!/^\d$/.test(e.key)) {
-                e.preventDefault();
-              }
-            }}
+            placeholder="Enter secondary contact number"
           />
-          {errors.contactNumber2 && (
-            <p className={styles.errorText}>{errors.contactNumber2}</p>
-          )}
         </div>
-        <button className="submitButton" onClick={handleSubmit}>
-          Submit
-        </button>
       </form>
+      <button
+        className="submitButton"
+        onClick={handleSubmit}
+        style={{ marginTop: 20 }}
+      >
+        Submit
+      </button>
     </div>
   );
 };

@@ -30,6 +30,8 @@
 .dropdownOption {
   padding: 10px;
   cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .dropdownOption:hover,
