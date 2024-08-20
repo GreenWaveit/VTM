@@ -56,6 +56,7 @@ const ListOfFaculty: React.FC = () => {
 
   return (
     <div className={styles.container}>
+      <div className="sectionHeader">List of Facultys</div>
       <div className={styles.inputContainer}>
         <input
           type="text"

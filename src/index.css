@@ -124,6 +124,17 @@ p {
   width: 100%;
 }
 
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  background-color: #f9a825; /* Orange background color */
+  padding: 10px;
+  border-radius: 5px;
+  color: #000;
+  font-weight: 700;
+  margin: 20px 0;
+}
+
 .editButton:hover {
   background-color: #218838; /* Darker green for hover */
 }

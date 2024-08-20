@@ -53,6 +53,7 @@ const CollegeList: React.FC = () => {
 
   return (
     <div className={styles.container}>
+      <div className="sectionHeader">List of Colleges</div>
       <div className={styles.filters}>
         <input
           type="text"

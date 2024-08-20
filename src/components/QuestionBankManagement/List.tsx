@@ -17,6 +17,8 @@ interface Question {
   class: string;
   academicYear: string;
   question: string;
+  options: string[];
+  correctOption: string; // Ensure this matches your data field
 }
 
 const subjects: Option[] = [
@@ -64,14 +66,31 @@ const academicYears: Option[] = [
   { id: "2", name: "2023-2024" },
 ];
 
+const transformQuestionsData = (data: any[]): Question[] => {
+  return data.map((item) => ({
+    id: item.id,
+    subject: item.subject,
+    chapter: item.chapter,
+    topic: item.topic,
+    class: item.class,
+    academicYear: item.academicYear,
+    question: item.question,
+    options: item.options,
+    correctOption: item.correctOption, // Ensure this matches your data
+  }));
+};
+
 const QuestionsList: React.FC = () => {
-  const [questions, setQuestions] = useState<Question[]>(questionsData);
+  const [questions, setQuestions] = useState<Question[]>(
+    transformQuestionsData(questionsData)
+  );
   const [filters, setFilters] = useState({
     subject: "",
     chapter: [] as string[],
     topic: [] as string[],
     class: "",
     academicYear: "",
+    question: "", // Added filter for question
   });
 
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -106,13 +125,17 @@ const QuestionsList: React.FC = () => {
     const isClassMatch = !filters.class || question.class === filters.class;
     const isAcademicYearMatch =
       !filters.academicYear || question.academicYear === filters.academicYear;
+    const isQuestionMatch =
+      !filters.question ||
+      question.question.toLowerCase().includes(filters.question.toLowerCase());
 
     return (
       isSubjectMatch &&
       isChapterMatch &&
       isTopicMatch &&
       isClassMatch &&
-      isAcademicYearMatch
+      isAcademicYearMatch &&
+      isQuestionMatch
     );
   });
 
@@ -135,8 +158,39 @@ const QuestionsList: React.FC = () => {
     );
   };
 
+  const handleOptionChange = (
+    questionId: string,
+    optionIndex: number,
+    newValue: string
+  ) => {
+    setQuestions((prevQuestions) =>
+      prevQuestions.map((question) =>
+        question.id === questionId
+          ? {
+              ...question,
+              options: question.options.map((option, index) =>
+                index === optionIndex ? newValue : option
+              ),
+            }
+          : question
+      )
+    );
+  };
+
+  const handleCorrectOptionChange = (
+    questionId: string,
+    correctOption: string
+  ) => {
+    setQuestions((prevQuestions) =>
+      prevQuestions.map((question) =>
+        question.id === questionId ? { ...question, correctOption } : question
+      )
+    );
+  };
+
   return (
     <div className="container">
+      <div className="sectionHeader">List of Questions</div>
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
           <label>Filter by Subject</label>
@@ -184,6 +238,15 @@ const QuestionsList: React.FC = () => {
           />
         </div>
       </div>
+      <div className={styles.filterGroup}>
+        <label>Filter by Question</label>
+        <input
+          type="text"
+          value={filters.question}
+          onChange={(e) => handleFilterChange("question", e.target.value)}
+          placeholder="Search question text"
+        />
+      </div>
       <div style={{ overflowX: "auto" }}>
         <table className={styles.questionsTable}>
           <thead>
@@ -218,6 +281,35 @@ const QuestionsList: React.FC = () => {
                   ) : (
                     question.question
                   )}
+                  <div className={styles.optionContainer}>
+                    {question.options.map((option, index) => (
+                      <div key={index}>
+                        <input
+                          type="radio"
+                          name={`correctOption-${question.id}`}
+                          checked={question.correctOption === option}
+                          onChange={() =>
+                            handleCorrectOptionChange(question.id, option)
+                          }
+                        />
+                        {editingId === question.id ? (
+                          <input
+                            type="text"
+                            value={option}
+                            onChange={(e) =>
+                              handleOptionChange(
+                                question.id,
+                                index,
+                                e.target.value
+                              )
+                            }
+                          />
+                        ) : (
+                          option
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </td>
                 <td>{question.subject}</td>
                 <td>{question.chapter.join(", ")}</td>
@@ -227,14 +319,8 @@ const QuestionsList: React.FC = () => {
                 <td>
                   {editingId === question.id ? (
                     <button
-                      onClick={() =>
-                        handleSaveClick(question.id, {
-                          ...question,
-                          question: question.question, // Save current input value
-                        })
-                      }
+                      onClick={() => handleSaveClick(question.id, question)}
                       className="editButton"
-                      style={{ marginBottom: 5 }}
                     >
                       Save
                     </button>
@@ -242,7 +328,6 @@ const QuestionsList: React.FC = () => {
                     <button
                       onClick={() => handleEditClick(question.id)}
                       className="editButton"
-                      style={{ marginBottom: 5 }}
                     >
                       Edit
                     </button>

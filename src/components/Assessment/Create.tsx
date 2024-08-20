@@ -77,6 +77,7 @@ const CreateTest: React.FC = () => {
 
   const [selectedQuestions, setSelectedQuestions] = useState<string[]>([]);
   const [testTitle, setTestTitle] = useState("");
+  const [duration, setDuration] = useState("");
   const [showSelected, setShowSelected] = useState(false);
 
   const handleFilterChange = useCallback(
@@ -121,6 +122,7 @@ const CreateTest: React.FC = () => {
 
   return (
     <div className="container">
+      <div className="sectionHeader">Create Test</div>
       <div className={styles.filters}>
         {/* Filter by Subject */}
         <div className={styles.filterGroup}>
@@ -177,6 +179,7 @@ const CreateTest: React.FC = () => {
           />
         </div>
       </div>
+
       {/* Question Selection */}
       <div className={styles.filterGroup}>
         <label>Select Questions</label>
@@ -190,25 +193,34 @@ const CreateTest: React.FC = () => {
             onChange={setSelectedQuestions}
             placeholder="Select questions"
           />
-          {/* <button onClick={handleAddQuestions} className={styles.addButton}>
-            Add
-          </button> */}
         </div>
       </div>
-      {/* Display Selected Questions */}
 
+      {/* Display Test Title and Duration */}
       {selectedQuestions.length > 0 && (
-        <div className={styles.testTitle}>
-          <label>Test Title</label>
-          <input
-            type="text"
-            value={testTitle}
-            onChange={(e) => setTestTitle(e.target.value)}
-            placeholder="Enter test title"
-          />
+        <div className={styles.testDetails}>
+          <div className={styles.testTitle}>
+            <label>Test Title</label>
+            <input
+              type="text"
+              value={testTitle}
+              onChange={(e) => setTestTitle(e.target.value)}
+              placeholder="Enter test title"
+            />
+          </div>
+          <div className={styles.testDuration}>
+            <label>Duration (minutes)</label>
+            <input
+              type="text"
+              value={duration}
+              onChange={(e) => setDuration(e.target.value)}
+              placeholder="Enter duration"
+            />
+          </div>
         </div>
       )}
 
+      {/* Display Selected Questions */}
       {selectedQuestions.length > 0 && (
         <div className={styles.selectedQuestions}>
           <h4>Selected Questions</h4>
@@ -243,6 +255,7 @@ const CreateTest: React.FC = () => {
           </ul>
         </div>
       )}
+      <button className="addButton">Create Test</button>
     </div>
   );
 };

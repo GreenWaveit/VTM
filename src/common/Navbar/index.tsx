@@ -42,7 +42,12 @@ const Navbar = () => {
           </option>
           <option value="/question-list">Questions List</option>
           <option value="/create-test">Create Test</option>
-          <option value="/test-results">Test Tesults</option>
+          <option value="/test-lists">Test List</option>
+          <option value="/assign-test">Assign Test</option>
+          <option value="/test-results">Test Results</option>
+          <option value="/student-wise-reports/Aprameya">
+            Student wise reports for APRAMEYA AR
+          </option>
         </select>
       </div>
     </div>

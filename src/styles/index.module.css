@@ -27,10 +27,37 @@
   color: #e25050;
 }
 
+.testDetails {
+  display: grid;
+  grid-template-columns: 0.7fr 0.3fr;
+  align-items: center;
+  margin-top: 20px;
+  grid-gap: 20px;
+}
+
 .form {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+}
+
+.optionContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+
+.optionContainer div {
+  display: grid;
+  grid-template-columns: 0.1fr 0.9fr;
+  align-items: center;
+  grid-gap: 10px;
+  font-size: 14px;
+  margin: 10px;
+}
+
+.optionContainer div input {
+  height: 20px !important;
 }
 
 .formGroup {
@@ -210,14 +237,17 @@ select:focus {
   padding: 1rem;
 }
 
-.questionsTable {
+.questionsTable,
+.table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 50px;
 }
 
 .questionsTable th,
-.questionsTable td {
+.questionsTable td,
+.table th,
+.table td {
   border: 1px solid #ddd;
   padding: 0.5rem;
   text-align: left;
@@ -225,6 +255,18 @@ select:focus {
 
 .questionsTable th {
   background-color: #f4f4f4;
+}
+
+.table th:nth-child(1),
+.table td:nth-child(1) {
+  width: 80%;
+}
+
+.table th:nth-child(2),
+.table td:nth-child(2),
+.table th:nth-child(3),
+.table td:nth-child(3) {
+  width: 10%;
 }
 
 /* // */
@@ -268,10 +310,6 @@ select:focus {
 
 .options input[type="radio"] {
   margin-right: 10px;
-}
-
-.testTitle {
-  margin-top: 20px;
 }
 
 .testTitle label {
